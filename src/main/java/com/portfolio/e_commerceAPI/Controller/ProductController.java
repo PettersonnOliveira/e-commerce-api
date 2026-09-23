@@ -1,10 +1,12 @@
 package com.portfolio.e_commerceAPI.Controller;
 
-import com.portfolio.e_commerceAPI.dtos.*;
+import com.portfolio.e_commerceAPI.ProductService;
+import com.portfolio.e_commerceAPI.dtos.ProductRequestDTO;
+import com.portfolio.e_commerceAPI.dtos.ProductResponseDTO;
+import com.portfolio.e_commerceAPI.dtos.ProductUpdateDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.portfolio.e_commerceAPI.ProductService;
 
 import java.util.List;
 

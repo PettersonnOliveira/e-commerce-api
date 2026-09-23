@@ -1,12 +1,12 @@
 package com.portfolio.e_commerceAPI.services;
 
 import com.portfolio.e_commerceAPI.Exceptions.ResourceNotFoundException;
-import com.portfolio.e_commerceAPI.entities.Order;
 import com.portfolio.e_commerceAPI.dtos.OrderRequestDTO;
 import com.portfolio.e_commerceAPI.dtos.OrderResponseDTO;
 import com.portfolio.e_commerceAPI.dtos.OrderUpdateDTO;
-import org.springframework.stereotype.Service;
+import com.portfolio.e_commerceAPI.entities.Order;
 import com.portfolio.e_commerceAPI.repositories.OrderRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

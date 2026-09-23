@@ -1,6 +1,8 @@
 package com.portfolio.e_commerceAPI.Controller;
 
-import com.portfolio.e_commerceAPI.dtos.*;
+import com.portfolio.e_commerceAPI.dtos.OrderRequestDTO;
+import com.portfolio.e_commerceAPI.dtos.OrderResponseDTO;
+import com.portfolio.e_commerceAPI.dtos.OrderUpdateDTO;
 import com.portfolio.e_commerceAPI.services.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

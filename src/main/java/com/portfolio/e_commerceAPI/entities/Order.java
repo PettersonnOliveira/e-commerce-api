@@ -6,6 +6,7 @@ import com.portfolio.e_commerceAPI.dtos.OrderUpdateDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 @Entity
 @Table(name = "orders")
@@ -17,15 +18,18 @@ public class Order {
     private OrderStatus status;
     private LocalDateTime createdAt;
 
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> items;
+
     public Order(){
     }
     public Order(OrderRequestDTO inputData){
         this.status = OrderStatus.PENDING;
         this.createdAt = LocalDateTime.now();
     }
-    public Order(OrderUpdateDTO inputData){
-        this.status = OrderStatus.PENDING;
-    }
+    // public Order(OrderUpdateDTO inputData){
+     //   this.status = OrderStatus.PENDING;
+   // }
 
     public Long getId() {
         return id;
@@ -49,6 +53,19 @@ public class Order {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
+    }
+    public Double getTotal(){
+        return items.stream()
+                .mapToDouble(item ->item.getQuantity() * item.getPrice())
+                .sum();
     }
 
     @Override
