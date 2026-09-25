@@ -1,5 +1,6 @@
 package com.portfolio.e_commerceAPI.services;
 
+import com.portfolio.e_commerceAPI.Exceptions.BusinessRuleException;
 import com.portfolio.e_commerceAPI.Exceptions.ResourceNotFoundException;
 import com.portfolio.e_commerceAPI.dtos.OrderItemResponseDTO;
 import com.portfolio.e_commerceAPI.dtos.OrderItemUpdateDTO;
@@ -35,7 +36,18 @@ public class OrderItemService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product não encontrado"));
 
         OrderItem orderItem = new OrderItem(inputData);
-        orderItem.setOrder(order);
+        if (orderItem.getQuantity() <= 0){
+            throw new BusinessRuleException("não pode criar um item com quantidade menor ou igual a zero");
+        }
+
+        if (product.getStock() < orderItem.getQuantity()) {
+            throw new BusinessRuleException("Estoque insuficiente para o produto: " + product.getName());
+        }
+            int stock = product.getStock() - orderItem.getQuantity();
+            product.setStock(stock);
+
+        productRepository.save(product);
+            orderItem.setOrder(order);
         orderItem.setProduct(product);
         orderItem.setPrice(product.getPrice());
         OrderItem orderItemSalvo = orderItemRepository.save(orderItem);
@@ -57,6 +69,8 @@ public class OrderItemService {
         OrderItem orderItem = orderItemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("OrderItem não encontrado"));
 
+        int dif = inputData.quantity() - orderItem.getQuantity();
+        orderItem.getProduct().setStock(orderItem.getProduct().getStock() - dif);
         orderItem.setQuantity(inputData.quantity());
 
         OrderItem orderItemAtualizada = orderItemRepository.save(orderItem);
