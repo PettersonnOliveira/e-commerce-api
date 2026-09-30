@@ -6,8 +6,11 @@ import com.portfolio.e_commerceAPI.dtos.OrderRequestDTO;
 import com.portfolio.e_commerceAPI.dtos.OrderResponseDTO;
 import com.portfolio.e_commerceAPI.dtos.OrderUpdateDTO;
 import com.portfolio.e_commerceAPI.entities.Order;
+import com.portfolio.e_commerceAPI.entities.OrderItem;
+import com.portfolio.e_commerceAPI.entities.Product;
 import com.portfolio.e_commerceAPI.entities.enums.OrderStatus;
 import com.portfolio.e_commerceAPI.repositories.OrderRepository;
+import com.portfolio.e_commerceAPI.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +18,12 @@ import java.util.List;
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
 
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, ProductRepository productRepository) {
         this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
     }
-
 
     public OrderResponseDTO create(OrderRequestDTO inputData) {
         Order order = new Order(inputData);
@@ -59,9 +63,20 @@ public class OrderService {
                 throw new BusinessRuleException("nao é possivel realizar essa atualizaçao");
             }
         }
+        if (inputData.status() == OrderStatus.CANCELLED){
+            for (OrderItem item : order.getItems()) {
+                item.getProduct().setStock(
+                        item.getQuantity() + item.getProduct().getStock()
+                );
+                productRepository.save(item.getProduct());
+            }
+        }
+
+
         order.setStatus(inputData.status());
 
         Order orderAtualizado = orderRepository.save(order);
+
         return new OrderResponseDTO(orderAtualizado);
     }
     public void delete(Long id){

@@ -70,7 +70,12 @@ public class OrderItemService {
                 .orElseThrow(() -> new ResourceNotFoundException("OrderItem não encontrado"));
 
         int dif = inputData.quantity() - orderItem.getQuantity();
+
+        if (dif > orderItem.getProduct().getStock()) {
+            throw new BusinessRuleException("Estoque insuficiente");
+        }
         orderItem.getProduct().setStock(orderItem.getProduct().getStock() - dif);
+
         orderItem.setQuantity(inputData.quantity());
 
         OrderItem orderItemAtualizada = orderItemRepository.save(orderItem);
@@ -80,6 +85,7 @@ public class OrderItemService {
     public void delete(Long id){
         OrderItem orderItem = orderItemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("OrderItem não encontrado"));
+        orderItem.getProduct().setStock(orderItem.getQuantity() + orderItem.getProduct().getStock() );
         orderItemRepository.delete(orderItem);
     }
 }

@@ -4,6 +4,7 @@ import com.portfolio.e_commerceAPI.dtos.OrderItemResponseDTO;
 import com.portfolio.e_commerceAPI.dtos.OrderItemUpdateDTO;
 import com.portfolio.e_commerceAPI.dtos.OrderItemRequestDTO;
 import com.portfolio.e_commerceAPI.services.OrderItemService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class OrderItemController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderItemResponseDTO> criar(@RequestBody OrderItemRequestDTO inputData){
+    public ResponseEntity<OrderItemResponseDTO> criar(@RequestBody @Valid OrderItemRequestDTO inputData){
         OrderItemResponseDTO orderItemResponseDTO = orderItemService.create(inputData);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderItemResponseDTO);
     }
@@ -35,7 +36,7 @@ public class OrderItemController {
         return ResponseEntity.ok(orderItemResponseDTO);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<OrderItemResponseDTO> update(@PathVariable Long id, @RequestBody OrderItemUpdateDTO inputData){
+    public ResponseEntity<OrderItemResponseDTO> update(@PathVariable @Valid  Long id, @RequestBody OrderItemUpdateDTO inputData){
         OrderItemResponseDTO orderItemResponseDTO = orderItemService.update(id,inputData);
         return ResponseEntity.ok(orderItemResponseDTO);
     }

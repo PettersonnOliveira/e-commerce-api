@@ -4,6 +4,7 @@ import com.portfolio.e_commerceAPI.dtos.CategoryRequestDTO;
 import com.portfolio.e_commerceAPI.dtos.CategoryResponseDTO;
 import com.portfolio.e_commerceAPI.dtos.CategoryUpdateDTO;
 import com.portfolio.e_commerceAPI.services.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
     @PostMapping
-    public ResponseEntity<CategoryResponseDTO> criar(@RequestBody CategoryRequestDTO inputData){
+    public ResponseEntity<CategoryResponseDTO> criar(@RequestBody @Valid CategoryRequestDTO inputData){
         CategoryResponseDTO categoryResponseDTO = categoryService.create(inputData);
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryResponseDTO);
     }
@@ -34,7 +35,7 @@ public class CategoryController {
         return ResponseEntity.ok(categoryResponseDTO);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryResponseDTO> update(@PathVariable Long id, @RequestBody CategoryUpdateDTO inputData){
+    public ResponseEntity<CategoryResponseDTO> update(@PathVariable @Valid Long id, @RequestBody CategoryUpdateDTO inputData){
         CategoryResponseDTO categoryResponseDTO = categoryService.update(id,inputData);
         return ResponseEntity.ok(categoryResponseDTO);
     }
