@@ -4,6 +4,7 @@ import com.portfolio.e_commerceAPI.dtos.CategoryRequestDTO;
 import com.portfolio.e_commerceAPI.dtos.CategoryResponseDTO;
 import com.portfolio.e_commerceAPI.dtos.CategoryUpdateDTO;
 import com.portfolio.e_commerceAPI.services.CategoryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
+@Tag(
+        name = "Categories",
+        description = "Gerenciamento de categorias"
+)
 public class CategoryController {
     private final CategoryService categoryService;
 

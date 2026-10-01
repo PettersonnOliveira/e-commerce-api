@@ -4,6 +4,7 @@ import com.portfolio.e_commerceAPI.ProductService;
 import com.portfolio.e_commerceAPI.dtos.ProductRequestDTO;
 import com.portfolio.e_commerceAPI.dtos.ProductResponseDTO;
 import com.portfolio.e_commerceAPI.dtos.ProductUpdateDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
+@Tag(
+        name = "Products",
+        description = "Gerenciamento de produtos"
+)
 public class ProductController {
     private final ProductService productService;
 

@@ -4,6 +4,7 @@ import com.portfolio.e_commerceAPI.dtos.OrderItemResponseDTO;
 import com.portfolio.e_commerceAPI.dtos.OrderItemUpdateDTO;
 import com.portfolio.e_commerceAPI.dtos.OrderItemRequestDTO;
 import com.portfolio.e_commerceAPI.services.OrderItemService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/order-items")
+@Tag(
+        name = "Order Items",
+        description = "Gerenciamento dos itens dos pedidos"
+)
 public class OrderItemController {
      private final OrderItemService orderItemService;
 
