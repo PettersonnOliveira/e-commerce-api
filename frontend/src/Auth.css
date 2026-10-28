@@ -1,0 +1,137 @@
+.auth-page {
+  min-height: 100vh;
+  padding: 35px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f5f6f8;
+  color: #171923;
+  font-family: inherit;
+}
+
+.auth-back {
+  position: absolute;
+  top: 30px;
+  left: 40px;
+  border: none;
+  background: transparent;
+  color: #555b68;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.auth-back:hover {
+  color: #111827;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 38px;
+  background: #fff;
+  border: 1px solid #e8eaf0;
+  border-radius: 16px;
+  box-shadow: 0 15px 45px rgba(20, 25, 40, 0.07);
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 35px;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.auth-brand-icon {
+  display: grid;
+  width: 35px;
+  height: 35px;
+  place-items: center;
+  border-radius: 9px;
+  background: #171923;
+  color: white;
+  font-size: 20px;
+}
+
+.auth-heading {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.auth-eyebrow {
+  color: #777e8c;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+}
+
+.auth-heading h1 {
+  margin: 10px 0;
+  font-size: 27px;
+  font-weight: 750;
+}
+
+.auth-heading > p:last-child {
+  color: #777e8c;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   Responsividade - Auth
+   -------------------------------------------------------------------------- */
+@media (max-width: 760px) {
+  .auth-page {
+    padding: 20px 16px;
+  }
+
+  .auth-back {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin-bottom: 16px;
+    align-self: flex-start;
+  }
+
+  .auth-card {
+    padding: 24px 20px;
+  }
+
+  .auth-brand {
+    margin-bottom: 24px;
+    font-size: 17px;
+  }
+
+  .auth-brand-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+  }
+
+  .auth-heading h1 {
+    font-size: 22px;
+  }
+
+  .auth-heading > p:last-child {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .auth-card {
+    padding: 20px 16px;
+  }
+
+  .auth-brand {
+    font-size: 16px;
+  }
+
+  .auth-heading h1 {
+    font-size: 20px;
+  }
+}

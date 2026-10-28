@@ -1,4 +1,4 @@
-package com.portfolio.e_commerceAPI;
+package com.portfolio.e_commerceAPI.services;
 
 import com.portfolio.e_commerceAPI.Exceptions.ResourceNotFoundException;
 import com.portfolio.e_commerceAPI.dtos.ProductRequestDTO;

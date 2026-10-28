@@ -9,7 +9,14 @@ public record OrderItemSummaryDTO(
         Long productId,
         String productName
 ) {
+
     public OrderItemSummaryDTO(OrderItem inputData) {
-        this(inputData.getId(), inputData.getQuantity(), inputData.getPrice(), inputData.getProduct().getId(), inputData.getProduct().getName());
+        this(
+                inputData.getId(),
+                inputData.getQuantity(),
+                inputData.getPrice(),
+                inputData.getProduct().getId(),
+                inputData.getProduct().getName()
+        );
     }
 }

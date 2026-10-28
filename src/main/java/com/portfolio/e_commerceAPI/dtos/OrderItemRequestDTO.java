@@ -8,9 +8,6 @@ public record OrderItemRequestDTO(
         @Positive(message = "A quantidade deve ser maior que zero")
         Integer quantity,
 
-        @NotNull(message = "O pedido é obrigatório")
-        Long orderId,
-
         @NotNull(message = "O produto é obrigatório")
         Long productId
 ) {

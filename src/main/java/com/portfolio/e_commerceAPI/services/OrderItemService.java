@@ -27,15 +27,19 @@ public class OrderItemService {
         this.productRepository = productRepository;
     }
 
-    public OrderItemResponseDTO create(OrderItemRequestDTO inputData) {
-        Long orderId = inputData.orderId();
-        Long productId = inputData.productId();
+    public OrderItemResponseDTO create(OrderItemRequestDTO inputData, Long orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Order não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
+        return create(inputData, order);
+    }
+
+    public OrderItemResponseDTO create(OrderItemRequestDTO inputData, Order order) {
+        Long productId = inputData.productId();
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product não encontrado"));
 
-        OrderItem orderItem = new OrderItem(inputData);
+        OrderItem orderItem = new OrderItem();
+        orderItem.setQuantity(inputData.quantity());
         if (orderItem.getQuantity() <= 0){
             throw new BusinessRuleException("não pode criar um item com quantidade menor ou igual a zero");
         }

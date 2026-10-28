@@ -1,0 +1,2 @@
+-- Dados iniciais para o e-commerce (desativado temporariamente)
+-- Será populado via API após login

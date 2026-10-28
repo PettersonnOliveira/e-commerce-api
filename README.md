@@ -1,174 +1,287 @@
-# E-Commerce API
+# E-commerce API
 
-API RESTful para gestão de um sistema de e-commerce, desenvolvida em Java com Spring Boot.
+Aplicação full stack de e-commerce desenvolvida para simular o fluxo de uma loja virtual: cadastro de usuários, autenticação, catálogo de produtos, carrinho e checkout de pedidos.
 
-## Sobre o projeto
+O projeto é dividido em uma API REST com Spring Boot e uma interface web em React. A API utiliza JWT para autenticação, MySQL para persistência e OpenAPI/Swagger para documentação dos endpoints.
 
-Este projeto simula as operações básicas de um e-commerce, com foco em cadastro e gerenciamento de categorias, produtos, pedidos e itens de pedido. A aplicação segue uma arquitetura em camadas com `Controller`, `Service`, `Repository`, `Entity`, `DTO` e tratamento global de exceções.
+## Funcionalidades
 
-## Tecnologias utilizadas
+- Cadastro e autenticação de usuários
+- Autenticação stateless com JWT
+- Controle de acesso por perfil (`USER` e `ADMIN`)
+- CRUD de categorias e produtos
+- Consulta pública do catálogo de produtos
+- Carrinho por usuário autenticado
+- Adição, atualização, remoção e limpeza de itens do carrinho
+- Checkout e gerenciamento de pedidos
+- Validação de dados de entrada
+- Tratamento global e padronizado de exceções
+- Interface web para clientes e administração
+- Documentação interativa com Swagger UI
+
+## Tecnologias
+
+### Backend
 
 - Java 21
 - Spring Boot 4.1.1
 - Spring Web
 - Spring Data JPA
-- Spring Validation
-- MySQL
+- Spring Security
+- JWT (JJWT)
+- Bean Validation
+- MySQL 8
 - Maven
+- Springdoc OpenAPI
 
-## Funcionalidades
+### Frontend
 
-- Cadastro, listagem, atualização e remoção de categorias
-- Cadastro de produtos vinculados a categorias
-- Controle de preço, descrição e estoque
-- Gestão de pedidos (orders)
-- Gestão de itens de pedido (order items)
-- Validação de dados de entrada
-- Tratamento padronizado de erros e exceções
+- React 19
+- Vite
+- JavaScript
+- Oxlint
+
+### Infraestrutura
+
+- Docker
+- Docker Compose
 
 ## Estrutura do projeto
 
 ```text
-src/
-├── main/
-│   ├── java/com/portfolio/e_commerceAPI/
-│   │   ├── Controller/
-│   │   ├── services/
-│   │   ├── repositories/
-│   │   ├── entities/
-│   │   ├── dtos/
-│   │   ├── Exceptions/
-│   │   └── ECommerceApiApplication.java
-│   └── resources/
-│       └── application.properties
-└── test/
+.
+├── src/
+│   ├── main/
+│   │   ├── java/com/portfolio/e_commerceAPI/
+│   │   │   ├── Controller/
+│   │   │   ├── config/
+│   │   │   ├── dtos/
+│   │   │   ├── entities/
+│   │   │   ├── repositories/
+│   │   │   ├── security/
+│   │   │   └── services/
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       └── data.sql
+│   └── test/
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   └── package.json
+├── Dockerfile
+├── docker-compose.yml
+└── pom.xml
 ```
 
 ## Pré-requisitos
 
-Antes de rodar a aplicação, certifique-se de ter instalado:
+Para executar o projeto localmente, instale:
 
 - Java 21
-- Maven
-- MySQL em execução localmente na porta 3306
+- Node.js e npm
+- MySQL 8, ou Docker Desktop
+- Git
 
-## Como executar localmente
+## Configuração da API
 
-1. Clone o repositório:
+As propriedades locais ficam em `src/main/resources/application.properties`. Não versione senhas, chaves JWT ou outros segredos reais.
+
+Exemplo de configuração:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/ecommerce_db?useSSL=false&serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=sua_senha
+spring.jpa.hibernate.ddl-auto=update
+
+jwt.secret=uma-chave-secreta-longa-e-segura
+jwt.expiration=86400000
+```
+
+As propriedades também podem ser sobrescritas por variáveis de ambiente do Spring, por exemplo:
+
+```powershell
+$env:SPRING_DATASOURCE_PASSWORD="sua_senha"
+$env:JWT_SECRET="uma-chave-secreta-longa-e-segura"
+```
+
+## Executando localmente
+
+### 1. Clonar o repositório
 
 ```bash
 git clone https://github.com/PettersonnOliveira/e-commerce-api.git
 cd e-commerce-api
 ```
 
-2. Configure a conexão com o banco MySQL. O projeto usa a propriedade `spring.datasource.password`, então você pode definir uma variável de ambiente ou editar o arquivo `src/main/resources/application.properties`.
+### 2. Iniciar a API
 
-Exemplo:
-
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/e-commerce_db?createDatabaseIfNotExist=true
-spring.datasource.username=root
-spring.datasource.password=${MINHA_SENHA}
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-```
-
-Ou, em terminal no Windows PowerShell:
-
-```powershell
-$env:MINHA_SENHA="sua_senha"
-```
-
-3. Execute a aplicação com o Maven:
+No Linux/macOS:
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-4. A aplicação ficará disponível em:
+No Windows:
 
-```text
-http://localhost:8080
+```powershell
+.\mvnw.cmd spring-boot:run
 ```
 
-O Hibernate criará automaticamente o banco `e-commerce_db` e as tabelas necessárias.
+A API ficará disponível em `http://localhost:8080`.
 
-## Endpoints principais
+### 3. Iniciar o frontend
 
-### Categorias
+Em outro terminal:
 
-- `POST /categories` - cria uma categoria
-- `GET /categories` - lista todas as categorias
-- `GET /categories/{id}` - busca uma categoria por id
-- `PUT /categories/{id}` - atualiza uma categoria
-- `DELETE /categories/{id}` - remove uma categoria
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-Exemplo de criação:
+A interface ficará disponível em `http://localhost:5173`.
 
-```http
-POST /categories
-Content-Type: application/json
+O frontend atualmente está configurado para consumir a API em `http://localhost:8080`. Para utilizar outro endereço em produção, atualize a URL da API no frontend e a origem permitida em `SecurityConfig`.
 
+## Executando com Docker Compose
+
+O `docker-compose.yml` sobe o MySQL e a API. Como o `Dockerfile` copia o JAR gerado pelo Maven, gere o artefato antes do build:
+
+```bash
+./mvnw clean package -DskipTests
+docker compose up --build
+```
+
+No Windows:
+
+```powershell
+.\mvnw.cmd clean package -DskipTests
+docker compose up --build
+```
+
+Com Docker Compose:
+
+- API: `http://localhost:8081`
+- MySQL: `localhost:3307`
+- Banco dentro da rede Docker: `ecommerce_db`
+
+Para encerrar os containers:
+
+```bash
+docker compose down
+```
+
+Para remover também os dados persistidos do MySQL:
+
+```bash
+docker compose down -v
+```
+
+## Documentação da API
+
+Com a API em execução, acesse:
+
+- Swagger UI: `http://localhost:8080/swagger-ui/index.html`
+- Especificação OpenAPI: `http://localhost:8080/v3/api-docs`
+
+Quando a API estiver sendo executada pelo Docker Compose, substitua a porta `8080` por `8081`.
+
+## Principais endpoints
+
+Todas as rotas abaixo exigem o header `Authorization: Bearer <token>`, exceto quando indicado.
+
+### Autenticação e usuários
+
+| Método | Endpoint | Acesso | Descrição |
+|---|---|---|---|
+| `POST` | `/users/register` | Público | Cadastra um usuário |
+| `POST` | `/auth/login` | Público | Autentica e retorna um JWT |
+| `GET` | `/users` | Autenticado | Lista usuários |
+| `GET` | `/users/{id}` | Autenticado | Busca um usuário |
+| `PUT` | `/users/{id}` | Autenticado | Atualiza um usuário |
+| `DELETE` | `/users/{id}` | Autenticado | Remove um usuário |
+
+Exemplo de login:
+
+```json
 {
-  "name": "Eletrônicos"
+  "email": "usuario@email.com",
+  "password": "sua_senha"
 }
 ```
 
-### Produtos
+### Catálogo
 
-- `POST /products` - cria um produto
-- `GET /products` - lista todos os produtos
-- `GET /products/{id}` - busca um produto por id
-- `PUT /products/{id}` - atualiza um produto
-- `DELETE /products/{id}` - remove um produto
+| Método | Endpoint | Acesso | Descrição |
+|---|---|---|---|
+| `GET` | `/products` | Público | Lista produtos |
+| `GET` | `/products/{id}` | Público | Busca um produto |
+| `POST` | `/products` | Autenticado | Cadastra um produto |
+| `PUT` | `/products/{id}` | Autenticado | Atualiza um produto |
+| `DELETE` | `/products/{id}` | Autenticado | Remove um produto |
+| `GET` | `/categories` | Autenticado | Lista categorias |
+| `POST` | `/categories` | Autenticado | Cadastra uma categoria |
+| `PUT` | `/categories/{id}` | Autenticado | Atualiza uma categoria |
+| `DELETE` | `/categories/{id}` | Autenticado | Remove uma categoria |
 
-Exemplo de criação:
+### Carrinho
 
-```http
-POST /products
-Content-Type: application/json
-
-{
-  "name": "Smartphone X",
-  "description": "Telefone com 128GB e câmera de 48MP",
-  "price": 2499.99,
-  "stock": 20,
-  "categoryId": 1
-}
-```
+| Método | Endpoint | Descrição |
+|---|---|---|
+| `GET` | `/cart` | Consulta o carrinho do usuário autenticado |
+| `POST` | `/cart/items` | Adiciona um produto ao carrinho |
+| `PUT` | `/cart/items/{itemId}` | Atualiza a quantidade de um item |
+| `DELETE` | `/cart/items/{itemId}` | Remove um item |
+| `DELETE` | `/cart` | Limpa o carrinho |
 
 ### Pedidos
 
-- `POST /orders`
-- `GET /orders`
-- `GET /orders/{id}`
-- `PUT /orders/{id}`
-- `DELETE /orders/{id}`
+| Método | Endpoint | Acesso | Descrição |
+|---|---|---|---|
+| `POST` | `/orders/checkout` | Autenticado | Cria um pedido a partir do carrinho |
+| `GET` | `/orders` | Autenticado | Lista os pedidos do usuário; administradores visualizam todos |
+| `GET` | `/orders/{id}` | Autenticado | Consulta um pedido |
+| `PUT` | `/orders/{id}` | `ADMIN` | Atualiza um pedido |
+| `DELETE` | `/orders/{id}` | `ADMIN` | Remove um pedido |
 
-### Itens de pedido
+Também estão disponíveis os endpoints CRUD de `/order-items`.
 
-- `POST /order-items`
-- `GET /order-items`
-- `GET /order-items/{id}`
-- `PUT /order-items/{id}`
-- `DELETE /order-items/{id}`
+## Testes e build
 
-## Tratamento de erros
+Executar os testes do backend:
 
-A aplicação utiliza exceções personalizadas para padronizar respostas em cenários de erro, como:
+```bash
+./mvnw test
+```
 
-- recurso não encontrado
-- regra de negócio inválida
-- dados inválidos enviados na requisição
+Gerar o JAR:
 
-## Melhorias futuras
+```bash
+./mvnw clean package
+```
 
-- autenticação e autorização
-- paginação e filtros em listagens
-- documentação interativa com Swagger/OpenAPI
-- testes automatizados de integração
-- camada de cache e melhoria de performance
+Verificar e gerar o frontend:
+
+```bash
+cd frontend
+npm run lint
+npm run build
+```
+
+## Checklist para deploy
+
+Antes de publicar a aplicação:
+
+1. Configure uma instância MySQL de produção.
+2. Defina `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME` e `SPRING_DATASOURCE_PASSWORD` como variáveis secretas.
+3. Substitua `JWT_SECRET` por uma chave longa, aleatória e exclusiva.
+4. Configure a URL pública da API no frontend.
+5. Atualize as origens CORS permitidas em `SecurityConfig`.
+6. Desative logs de debug e o DevTools em produção.
+7. Execute os testes e o build antes de criar a imagem Docker.
+8. Não exponha a porta do banco de dados publicamente sem necessidade.
 
 ## Licença
 
-Este projeto está sob a licença MIT. Consulte o arquivo `LICENSE` para mais detalhes.
+Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.

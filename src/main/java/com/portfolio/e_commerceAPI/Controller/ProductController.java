@@ -1,13 +1,14 @@
 package com.portfolio.e_commerceAPI.Controller;
 
-import com.portfolio.e_commerceAPI.ProductService;
 import com.portfolio.e_commerceAPI.dtos.ProductRequestDTO;
 import com.portfolio.e_commerceAPI.dtos.ProductResponseDTO;
 import com.portfolio.e_commerceAPI.dtos.ProductUpdateDTO;
+import com.portfolio.e_commerceAPI.services.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductResponseDTO> criar(@RequestBody @Valid ProductRequestDTO inputData){
         ProductResponseDTO productResponseDTO = productService.create(inputData);
         return ResponseEntity.status(HttpStatus.CREATED).body(productResponseDTO);
@@ -41,11 +43,13 @@ public class ProductController {
         return ResponseEntity.ok(productResponseDTO);
     }
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductResponseDTO> update(@PathVariable @Valid Long id, @RequestBody ProductUpdateDTO inputData){
         ProductResponseDTO productResponseDTO = productService.update(id,inputData);
         return ResponseEntity.ok(productResponseDTO);
     }
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         productService.delete(id);
         return ResponseEntity.noContent().build();

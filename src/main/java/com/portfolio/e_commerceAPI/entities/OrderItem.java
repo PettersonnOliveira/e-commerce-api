@@ -1,6 +1,5 @@
 package com.portfolio.e_commerceAPI.entities;
 
-import com.portfolio.e_commerceAPI.dtos.OrderItemRequestDTO;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -8,25 +7,26 @@ import java.util.Objects;
 @Entity
 @Table(name = "orderitens")
 public class OrderItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private Integer quantity;
+
+    @Column(nullable = false)
     private Double price;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    public OrderItem(){
-    }
-
-    public OrderItem(OrderItemRequestDTO inputData) {
-        this.quantity = inputData.quantity();
+    public OrderItem() {
     }
 
     public Long getId() {
@@ -71,6 +71,7 @@ public class OrderItem {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderItem orderItem = (OrderItem) o;
         return Objects.equals(id, orderItem.id);
