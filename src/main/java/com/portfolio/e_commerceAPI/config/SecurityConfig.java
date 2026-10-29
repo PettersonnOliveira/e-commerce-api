@@ -44,6 +44,10 @@ public class SecurityConfig {
                         // Rotas públicas de autenticação e cadastro
                         .requestMatchers("/auth/**", "/users/register").permitAll()
 
+                        // Catálogo público — leitura de produtos e categorias sem autenticação
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/products", "/products/**").permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/categories", "/categories/**").permitAll()
+
                         // Liberar Swagger / OpenAPI
                         .requestMatchers(
                                 "/swagger-ui/**",

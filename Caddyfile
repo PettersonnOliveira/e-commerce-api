@@ -1,0 +1,5 @@
+# Proxy reverso com HTTPS automático via Let's Encrypt
+# Domínio gratuito via sslip.io (mais confiável que nip.io para certificados TLS)
+144-22-158-86.sslip.io {
+    reverse_proxy ecommerce-api:8080
+}
